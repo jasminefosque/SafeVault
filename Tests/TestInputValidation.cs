@@ -141,7 +141,7 @@ public class TestInputValidation
             Assert.That(sanitized, Does.Not.Contain("<iframe>"));
             Assert.That(sanitized, Does.Not.Contain("<svg"));
             // All angle brackets should be encoded
-            Assert.That(sanitized, Does.Contain("&lt;") | Does.Not.Contain("<"));
+            Assert.That(sanitized, Does.Contain("&lt;"));
         }
     }
 }
