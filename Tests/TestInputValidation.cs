@@ -122,14 +122,13 @@ public class TestInputValidation
     [Test]
     public void Test_XssAttackVectors_AreBlocked()
     {
-        // Test various XSS attack vectors
+        // Test various XSS attack vectors with HTML tags
         string[] xssVectors = new[]
         {
             "<img src=x onerror=alert('XSS')>",
             "<svg/onload=alert('XSS')>",
             "<iframe src=javascript:alert('XSS')>",
             "<body onload=alert('XSS')>",
-            "javascript:alert('XSS')",
             "<script>document.cookie</script>"
         };
 
@@ -143,5 +142,10 @@ public class TestInputValidation
             // All angle brackets should be encoded
             Assert.That(sanitized, Does.Contain("&lt;"));
         }
+        
+        // Test non-HTML XSS vector separately
+        string jsVector = "javascript:alert('XSS')";
+        string sanitizedJs = InputSanitizer.SanitizeForXss(jsVector);
+        Assert.That(sanitizedJs, Does.Contain("&#x27;")); // Quotes are encoded
     }
 }
