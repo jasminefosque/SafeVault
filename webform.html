@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeVault - Secure Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .info {
+            background-color: #e7f3fe;
+            border-left: 4px solid #2196F3;
+            padding: 10px;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        .warning {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 10px;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔒 SafeVault Login</h1>
+        
+        <form id="loginForm" method="POST" action="/api/login">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required 
+                       pattern="[a-zA-Z0-9_]{3,20}"
+                       title="Username must be 3-20 characters, alphanumeric and underscore only">
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required
+                       title="Please enter a valid email address">
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required
+                       minlength="8"
+                       title="Password must be at least 8 characters">
+            </div>
+            
+            <button type="submit">Login</button>
+        </form>
+        
+        <div class="info">
+            <strong>Security Features:</strong>
+            <ul style="margin: 5px 0; padding-left: 20px;">
+                <li>Input sanitization prevents XSS attacks</li>
+                <li>Parameterized queries prevent SQL injection</li>
+                <li>BCrypt password hashing</li>
+                <li>Role-based authorization</li>
+            </ul>
+        </div>
+        
+        <div class="warning">
+            <strong>Note:</strong> This is a demonstration form. In production, this would be connected to the SafeVault.App backend with proper HTTPS encryption and CSRF protection.
+        </div>
+    </div>
+
+    <script>
+        // Client-side validation and sanitization demo
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Basic validation
+            if (!username || !email || !password) {
+                alert('All fields are required');
+                return;
+            }
+            
+            // Username validation
+            const usernamePattern = /^[a-zA-Z0-9_]{3,20}$/;
+            if (!usernamePattern.test(username)) {
+                alert('Invalid username format. Use 3-20 alphanumeric characters and underscores only.');
+                return;
+            }
+            
+            // Email validation
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                alert('Invalid email format');
+                return;
+            }
+            
+            // Password strength check
+            if (password.length < 8) {
+                alert('Password must be at least 8 characters');
+                return;
+            }
+            
+            // In a real application, this would be sent to the backend
+            // The backend would:
+            // 1. Sanitize inputs using InputSanitizer
+            // 2. Use parameterized SQL queries via UserRepository
+            // 3. Verify password with AuthService
+            // 4. Check authorization with RoleAuthorization
+            
+            alert('Form validation passed! In production, this would be sent to the SafeVault backend.');
+            
+            // For demo purposes, show sanitized values
+            console.log('Username:', username);
+            console.log('Email:', email);
+            console.log('Password: [REDACTED]');
+        });
+    </script>
+</body>
+</html>
